@@ -16,3 +16,4 @@ export {
   MESSAGE_MEDIA_TYPE,
   MESSAGE_TYPE,
 } from './src/constants/telegram-message-types.js'
+export { runDotenvOnDev } from './src/debug/dotenv-production.js'
