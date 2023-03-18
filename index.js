@@ -12,4 +12,4 @@ export {
   replyOnErrorOnly,
 } from './src/fastify-util/with-error-reply-handling.js'
 
-export { MESSAGE_TYPE } from './src/constants/telegram-message-types.js'
+export { MESSAGE_MEDIA_TYPE } from './src/constants/telegram-message-types.js'

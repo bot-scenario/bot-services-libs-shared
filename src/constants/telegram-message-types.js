@@ -1,4 +1,4 @@
-export const MESSAGE_TYPE = {
+export const MESSAGE_MEDIA_TYPE = {
   VIDEO: 'video',
   PHOTO: 'photo',
   DOCUMENT: 'document',
