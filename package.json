@@ -1,6 +1,6 @@
 {
   "name": "bot-services-libs-shared",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/fchangeltd/bot-services-libs-shared#readme",
   "dependencies": {
     "amqplib": "^0.10.3",
+    "botscenario-shared": "^1.0.7",
     "http-status": "^1.6.2",
     "node-fetch": "^3.3.1",
     "uuid": "^9.0.0"
