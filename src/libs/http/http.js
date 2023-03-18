@@ -1,7 +1,7 @@
 import httpStatus from 'http-status'
 import fetch from 'node-fetch'
 import { HTTP_METHODS } from './http-method.js'
-import { HttpError } from '../../services-util/errors/HttpError.js'
+import { HttpError } from 'botscenario-shared'
 const JSON_HEADER = {
   'Content-Type': 'application/json',
 }
