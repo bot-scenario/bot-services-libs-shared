@@ -1,6 +1,6 @@
 {
   "name": "bot-services-libs-shared",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -24,6 +24,7 @@
     "dotenv": "^16.0.3",
     "http-status": "^1.6.2",
     "node-fetch": "^3.3.1",
+    "redis-om": "^0.3.6",
     "uuid": "^9.0.0"
   }
 }
