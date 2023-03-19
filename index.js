@@ -19,3 +19,5 @@ export {
 export { runDotenvOnDev } from './src/debug/dotenv-production.js'
 export { redisConnect } from './src/libs/redis-om-service/redis-client.js'
 export { initRepositories as initRedisRepositories } from './src/libs/redis-om-service/repositories/init-repositories.js'
+export { ConfigurationSchema } from './src/libs/redis-om-service/schema/configuration.js'
+export { ChatInfoSchema } from './src/libs/redis-om-service/schema/chat-info.js'
