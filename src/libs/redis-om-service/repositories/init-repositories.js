@@ -21,7 +21,7 @@ export const initRepositories = async ({ url, schemas }) => {
     }),
   )
 
-  return repositories.reduce(async (repos, repo) => {
+  return repositories.reduce((repos, repo) => {
     return {
       ...repos,
       ...repo,
