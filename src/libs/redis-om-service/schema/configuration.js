@@ -8,6 +8,7 @@ const ConfigurationProperties = {
   email: { type: 'string' },
   name: { type: 'string' },
   application: { type: 'string' },
+  graph: { type: 'object' },
 }
 
 export const ConfigurationSchema = new Schema(
