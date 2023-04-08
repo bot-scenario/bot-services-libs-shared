@@ -1,0 +1,107 @@
+{
+    "_id": "64122e60a7d432b5518e7f56",
+    "id": "64122e60a7d432b5518e7f56",
+    "configurationId": "conf_25474f00-da49-457e-931d-74bdbb526ebb",
+    "name": "Scenario-1",
+    "languages": [
+        "en",
+        "he"
+    ],
+    "defaultLanguage": "he",
+    "elements": [
+        {
+            "id": "6414d82ba7d432b5518eab34",
+            "top": [],
+            "bottom": [
+                "6414d842a7d432b5518eab3e",
+                "6414d924a7d432b5518eab7a",
+                "6414d92ba7d432b5518eab7d",
+                "6414d932a7d432b5518eab82",
+                "6414daaea7d432b5518eabec"
+            ],
+            "type": "text-message",
+            "label": {
+                "en": "Where do you want fly next?",
+                "he": "לאן תרצה לטוס?"
+            }
+        },
+        {
+            "id": "6414d842a7d432b5518eab3e",
+            "top": [
+                "6414d82ba7d432b5518eab34"
+            ],
+            "bottom": [],
+            "type": "answer-button",
+            "data": {
+                "response": "6414d842a7d432b5518eab3e",
+                "caption": {
+                    "en": "Europe",
+                    "he": "אירופה"
+                }
+            }
+        },
+        {
+            "id": "6414d924a7d432b5518eab7a",
+            "top": [
+                "6414d82ba7d432b5518eab34"
+            ],
+            "bottom": [],
+            "type": "answer-button",
+            "data": {
+                "response": "6414d924a7d432b5518eab7a",
+                "caption": {
+                    "en": "United States",
+                    "he": "ארה״ב"
+                }
+            }
+        },
+        {
+            "id": "6414d92ba7d432b5518eab7d",
+            "top": [
+                "6414d82ba7d432b5518eab34"
+            ],
+            "bottom": [
+                "6414daaea7d432b5518eabec"
+            ],
+            "type": "answer-button",
+            "data": {
+                "response": "6414d92ba7d432b5518eab7d",
+                "caption": {
+                    "en": "Asia",
+                    "he": "אסיה"
+                }
+            }
+        },
+        {
+            "id": "6414d932a7d432b5518eab82",
+            "top": [
+                "6414d82ba7d432b5518eab34"
+            ],
+            "bottom": [],
+            "type": "answer-button",
+            "data": {
+                "response": "6414d932a7d432b5518eab82",
+                "caption": {
+                    "en": "Africa",
+                    "he": "אפריקה"
+                }
+            }
+        },
+        {
+            "id": "6414daaea7d432b5518eabec",
+            "top": [
+                "6414d82ba7d432b5518eab34",
+                "6414d92ba7d432b5518eab7d"
+            ],
+            "bottom": [],
+            "type": "answer-button",
+            "data": {
+                "response": "6414daaea7d432b5518eabec",
+                "caption": {
+                    "en": "Dubai",
+                    "he": "דובאי"
+                }
+            }
+        }
+    ]
+}
