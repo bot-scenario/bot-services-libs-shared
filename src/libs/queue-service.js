@@ -29,7 +29,13 @@ const parseMessage = (msgInfo) => {
   return JSON.parse(content.toString())
 }
 
-export const consumeQueue = async ({ channel, queue, onReceive, log }) => {
+export const consumeQueue = async ({
+  channel,
+  queue,
+  onReceive,
+  log,
+  nackOnError = false,
+}) => {
   try {
     channel.consume(queue, async (msgInfo) => {
       try {
@@ -40,7 +46,11 @@ export const consumeQueue = async ({ channel, queue, onReceive, log }) => {
       } catch (error) {
         const { msgId } = parseMessage(msgInfo)
         log.error(`Error while handling message: ${msgId}`)
-        channel.nack(msgInfo)
+        if (nackOnError) {
+          channel.nack(msgInfo)
+        } else {
+          channel.ack(msgInfo)
+        }
       }
     })
   } catch (error) {
