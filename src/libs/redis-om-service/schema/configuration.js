@@ -9,6 +9,7 @@ const ConfigurationProperties = {
   name: { type: 'string' },
   application: { type: 'string' },
   graph: { type: 'string' /* JSON string  */ },
+  nodes: { type: 'string' /* JSON string  */ },
 }
 
 export const ConfigurationSchema = new Schema(
