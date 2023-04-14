@@ -1,7 +1,7 @@
 {
-    "_id": "64122e60a7d432b5518e7f56",
-    "id": "64122e60a7d432b5518e7f56",
-    "configurationId": "conf_25474f00-da49-457e-931d-74bdbb526ebb",
+    "_id": "scn_64122e60a7d432b5518e7f56",
+    "id": "scn_64122e60a7d432b5518e7f56",
+    "configurationId": "conf_15971fd3-1837-4e9a-819e-9302caba3ca3",
     "name": "Scenario-1",
     "languages": [
         "en",
@@ -13,17 +13,17 @@
             "head": true,
             "id": "root",
             "links": [
-                "6414d82ba7d432b5518eab34"
+                "node_6414d82ba7d432b5518eab34"
             ]
         },
         {
-            "id": "6414d82ba7d432b5518eab34",
+            "id": "node_6414d82ba7d432b5518eab34",
             "links": [
-                "6414d842a7d432b5518eab3e",
-                "6414d924a7d432b5518eab7a",
-                "6414d92ba7d432b5518eab7d",
-                "6414d932a7d432b5518eab82",
-                "6414daaea7d432b5518eabec"
+                "node_6414d842a7d432b5518eab3e",
+                "node_6414d924a7d432b5518eab7a",
+                "node_6414d92ba7d432b5518eab7d",
+                "node_6414d932a7d432b5518eab82",
+                "node_6414daaea7d432b5518eabec"
             ],
             "type": "text-message",
             "label": {
@@ -32,11 +32,11 @@
             }
         },
         {
-            "id": "6414d842a7d432b5518eab3e",
+            "id": "node_6414d842a7d432b5518eab3e",
             "links": [],
             "type": "answer-button",
             "data": {
-                "response": "6414d842a7d432b5518eab3e",
+                "response": "node_6414d842a7d432b5518eab3e",
                 "caption": {
                     "en": "Europe",
                     "he": "אירופה"
@@ -44,11 +44,11 @@
             }
         },
         {
-            "id": "6414d924a7d432b5518eab7a",
+            "id": "node_6414d924a7d432b5518eab7a",
             "links": [],
             "type": "answer-button",
             "data": {
-                "response": "6414d924a7d432b5518eab7a",
+                "response": "node_6414d924a7d432b5518eab7a",
                 "caption": {
                     "en": "United States",
                     "he": "ארה״ב"
@@ -56,13 +56,13 @@
             }
         },
         {
-            "id": "6414d92ba7d432b5518eab7d",
+            "id": "node_6414d92ba7d432b5518eab7d",
             "links": [
-                "6414daaea7d432b5518eabec"
+                "node_6414daaea7d432b5518eabec"
             ],
             "type": "answer-button",
             "data": {
-                "response": "6414d92ba7d432b5518eab7d",
+                "response": "node_6414d92ba7d432b5518eab7d",
                 "caption": {
                     "en": "Asia",
                     "he": "אסיה"
@@ -70,11 +70,11 @@
             }
         },
         {
-            "id": "6414d932a7d432b5518eab82",
+            "id": "node_6414d932a7d432b5518eab82",
             "links": [],
             "type": "answer-button",
             "data": {
-                "response": "6414d932a7d432b5518eab82",
+                "response": "node_6414d932a7d432b5518eab82",
                 "caption": {
                     "en": "Africa",
                     "he": "אפריקה"
@@ -82,11 +82,11 @@
             }
         },
         {
-            "id": "6414daaea7d432b5518eabec",
+            "id": "node_6414daaea7d432b5518eabec",
             "links": [],
             "type": "answer-button",
             "data": {
-                "response": "6414daaea7d432b5518eabec",
+                "response": "node_6414daaea7d432b5518eabec",
                 "caption": {
                     "en": "Dubai",
                     "he": "דובאי"
