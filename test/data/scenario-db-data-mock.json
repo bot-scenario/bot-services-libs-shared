@@ -8,11 +8,17 @@
         "he"
     ],
     "defaultLanguage": "he",
-    "elements": [
+    "nodes": [
+        {
+            "head": true,
+            "id": "root",
+            "links": [
+                "6414d82ba7d432b5518eab34"
+            ]
+        },
         {
             "id": "6414d82ba7d432b5518eab34",
-            "top": [],
-            "bottom": [
+            "links": [
                 "6414d842a7d432b5518eab3e",
                 "6414d924a7d432b5518eab7a",
                 "6414d92ba7d432b5518eab7d",
@@ -21,16 +27,13 @@
             ],
             "type": "text-message",
             "label": {
-                "en": "Where do you want fly next?",
+                "en": "Where do you want fly links?",
                 "he": "לאן תרצה לטוס?"
             }
         },
         {
             "id": "6414d842a7d432b5518eab3e",
-            "top": [
-                "6414d82ba7d432b5518eab34"
-            ],
-            "bottom": [],
+            "links": [],
             "type": "answer-button",
             "data": {
                 "response": "6414d842a7d432b5518eab3e",
@@ -42,10 +45,7 @@
         },
         {
             "id": "6414d924a7d432b5518eab7a",
-            "top": [
-                "6414d82ba7d432b5518eab34"
-            ],
-            "bottom": [],
+            "links": [],
             "type": "answer-button",
             "data": {
                 "response": "6414d924a7d432b5518eab7a",
@@ -57,10 +57,7 @@
         },
         {
             "id": "6414d92ba7d432b5518eab7d",
-            "top": [
-                "6414d82ba7d432b5518eab34"
-            ],
-            "bottom": [
+            "links": [
                 "6414daaea7d432b5518eabec"
             ],
             "type": "answer-button",
@@ -74,10 +71,7 @@
         },
         {
             "id": "6414d932a7d432b5518eab82",
-            "top": [
-                "6414d82ba7d432b5518eab34"
-            ],
-            "bottom": [],
+            "links": [],
             "type": "answer-button",
             "data": {
                 "response": "6414d932a7d432b5518eab82",
@@ -89,11 +83,7 @@
         },
         {
             "id": "6414daaea7d432b5518eabec",
-            "top": [
-                "6414d82ba7d432b5518eab34",
-                "6414d92ba7d432b5518eab7d"
-            ],
-            "bottom": [],
+            "links": [],
             "type": "answer-button",
             "data": {
                 "response": "6414daaea7d432b5518eabec",
