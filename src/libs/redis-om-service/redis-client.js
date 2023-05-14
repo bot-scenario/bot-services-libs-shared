@@ -7,7 +7,9 @@ export const redisConnect = async ({ url }) => {
     await client.open()
     return client
   } catch (error) {
-    await client?.close()
+    if (client) {
+      await client?.close()
+    }
     console.log(error)
     throw error
   }
