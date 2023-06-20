@@ -26,5 +26,6 @@ export {
   STAGE_STEP,
 } from './src/constants/message-stage-action.js'
 export * from './src/libs/graph/scenario-graph.js'
+export * from './src/file-util/file-info.js'
 
 export { emitter } from './src/libs/emitter/index.js'

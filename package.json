@@ -22,9 +22,11 @@
     "amqplib": "^0.10.3",
     "botscenario-shared": "^1.0.7",
     "dotenv": "^16.0.3",
+    "file-type": "^18.5.0",
     "graph-data-structure": "^3.3.0",
     "http-status": "^1.6.2",
     "node-fetch": "^3.3.1",
+    "read-chunk": "^4.0.3",
     "redis-om": "^0.3.6",
     "uuid": "^9.0.0"
   }
