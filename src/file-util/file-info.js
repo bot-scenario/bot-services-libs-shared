@@ -10,3 +10,7 @@ export const getMimeType = async (fileName, length = 1000) => {
 export const extractExtension = (fileName) => {
   return fileName.substring(fileName.lastIndexOf('.') + 1)
 }
+
+export const generateFileId = () => {
+  return `${DATABASE_ID_PREFIX.FILE}_${v4()}`
+}
