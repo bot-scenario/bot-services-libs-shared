@@ -86,3 +86,26 @@ export const initializeQueue = async ({ host, queue, log }) => {
     consumeQueue: innerConsumeQueue,
   }
 }
+
+export const rabbitUriFromEnv = (env) => {
+  const {
+    RABBIT_HOST,
+    RABBIT_PORT,
+    RABBIT_USERNAME,
+    RABBIT_PASSWORD,
+    RABBIT_PROTOCOL = 'amqp',
+  } = env
+
+  const host = [
+    RABBIT_PROTOCOL,
+    '://',
+    RABBIT_USERNAME,
+    ':',
+    RABBIT_PASSWORD,
+    '@',
+    RABBIT_HOST,
+    ':',
+    RABBIT_PORT,
+  ].join('')
+  return host
+}
