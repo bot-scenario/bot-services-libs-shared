@@ -1,8 +1,8 @@
 import { Entity, Schema } from 'redis-om'
 
-class Configuration extends Entity {}
+class Platform extends Entity {}
 
-const ConfigurationProperties = {
+const PlatformProperties = {
   _id: { type: 'string' },
   token: { type: 'string' },
   email: { type: 'string' },
@@ -12,10 +12,6 @@ const ConfigurationProperties = {
   nodes: { type: 'string' /* JSON string  */ },
 }
 
-export const ConfigurationSchema = new Schema(
-  Configuration,
-  ConfigurationProperties,
-  {
-    dataStructure: 'JSON',
-  },
-)
+export const PlatformSchema = new Schema(Platform, PlatformProperties, {
+  dataStructure: 'JSON',
+})
