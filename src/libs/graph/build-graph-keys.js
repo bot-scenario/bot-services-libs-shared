@@ -33,3 +33,7 @@ export const generatePreviousNodesTypeOfNodeKey = ({ id }) => {
 export const generateNextNodesByFreeTextKey = ({ text }) => {
   return `next-nodes-of-free-text-${text}`
 }
+
+export const generateCurrentNodeTypeKey = ({ id }) => {
+  return `current-node-type-of-${id}`
+}

@@ -41,4 +41,5 @@ export {
   generateNextNodesTypeOfNodeKey,
   generatePreviousNodesTypeOfNodeKey,
   generateNextNodesByFreeTextKey,
+  generateCurrentNodeTypeKey,
 } from './src/libs/graph/build-graph-keys.js'
