@@ -7,20 +7,13 @@ import {
   generateNextNodeTypeOfPairKey,
   generatePreviousNodeTypeOfPairKey,
   generateNextNodesTypeOfNodeKey,
+  generatePreviousNodesTypeOfNodeKey,
 } from './build-graph-keys.js'
 
-const buildLinks = ({ links, id }, { stage }) => {
+const buildStageLinks = ({ links, id }, { stage }) => {
   const edges = links.reduce(
     (allBottoms, next) => [
       ...allBottoms,
-      {
-        from: generateNextNodesOfNodeKey({ id }),
-        to: next,
-      },
-      {
-        from: generatePreviousNodesOfNodeKey({ id: next }),
-        to: id,
-      },
       {
         from: generateNextNodesOfStageKey({ stage }),
         to: next,
@@ -36,86 +29,199 @@ const buildLinks = ({ links, id }, { stage }) => {
   return edges
 }
 
-const buildLinksToTypeByPair = ({ links, id }, { nodes }) => {
-  const edges = links.reduce(
-    (allBottoms, next) => [
-      ...allBottoms,
-      {
+const buildLinksNodeToNextNodes = ({ nodeLinkHash }) => {
+  return Object.entries(nodeLinkHash).reduce((allLinks, [id, links]) => {
+    return [
+      ...allLinks,
+      ...links.map((next) => ({
+        from: generateNextNodesOfNodeKey({ id }),
+        to: next,
+      })),
+    ]
+  }, [])
+}
+
+const buildLinksNodeToPreviousNodes = ({ reversedLinksHash }) => {
+  return Object.entries(reversedLinksHash).reduce((allLinks, [id, links]) => {
+    return [
+      ...allLinks,
+      ...links.map((next) => ({
+        from: generatePreviousNodesOfNodeKey({ id }),
+        to: next,
+      })),
+    ]
+  }, [])
+}
+
+const buildLinksNodeToNextTypeByPair = ({ nodeLinkHash, nodesHash }) => {
+  const edges = Object.entries(nodeLinkHash).reduce((allLinks, [id, links]) => {
+    return [
+      ...allLinks,
+      ...links.map((next) => ({
         from: generateNextNodeTypeOfPairKey({ id, next }),
-        to: nodes[next].type,
-      },
-      {
-        from: generatePreviousNodeTypeOfPairKey({ id, next }),
-        to: nodes[id].type,
-      },
-    ],
+        to: nodesHash[next].type,
+      })),
+    ]
+  }, [])
+
+  return edges
+}
+
+const buildLinksNodeToPreviousTypeByPair = ({
+  reversedLinksHash,
+  nodesHash,
+}) => {
+  const edges = Object.entries(reversedLinksHash).reduce(
+    (allLinks, [id, links]) => {
+      return [
+        ...allLinks,
+        ...links.map((next) => ({
+          from: generatePreviousNodeTypeOfPairKey({ id, next }),
+          to: nodesHash[next].type,
+        })),
+      ]
+    },
     [],
   )
 
   return edges
 }
-const buildLinksToNextTypeByNode = ({ links, id }, { nodes }) => {
-  const typesEdge = {
-    from: generateNextNodesTypeOfNodeKey({ id }),
-    to: links.map((id) => nodes[id].type),
-  }
 
-  return typesEdge
+const buildLinksToNextTypesByNode = ({ nodesHash }) => {
+  const linksToNextTypes = Object.entries(nodesHash)
+    .map(([id, { links }]) => ({
+      from: generateNextNodesTypeOfNodeKey({ id }),
+      to: links.map((id) => nodesHash[id].type),
+    }))
+    .filter(({ to }) => !!to.length)
+
+  return linksToNextTypes
 }
 
-const recursiveBuildBottoms = ({ head, nodes, stage, list }) => {
+const buildLinksToPreviousTypesByNode = ({ reversedLinksHash, nodesHash }) => {
+  const linksToPreviousTypes = Object.entries(reversedLinksHash)
+    .map(([id, links]) => ({
+      from: generatePreviousNodesTypeOfNodeKey({ id }),
+      to: links.map((id) => nodesHash[id].type),
+    }))
+    .filter(({ to }) => !!to.length)
+
+  return linksToPreviousTypes
+}
+
+const buildHierarchyGraph = ({ head, stage = 0 }) => {
+  if (!head?.links?.length) {
+    return []
+  }
+
+  const links = buildStageLinks(head, { stage })
+  const linksJoinedBottoms = [].concat(links).flat()
+  return linksJoinedBottoms
+}
+
+const recursiveBuildStageLinks = ({ head, nodesHash, stage, list }) => {
   return head.links
-    .map((linkId) => nodes[linkId])
+    .map((linkId) => nodesHash[linkId])
     .map((head) =>
       buildHierarchyGraph({
         head,
         stage: stage + 1,
         list,
-        nodes,
+        nodesHash,
       }),
     )
-}
-
-const buildHierarchyGraph = ({ head, nodes, stage = 0, list = [] }) => {
-  if (!head?.links?.length) {
-    return []
-  }
-
-  const links = buildLinks(head, { stage })
-  const pairTypeLinks = buildLinksToTypeByPair(head, { nodes })
-  const bottomLinks = recursiveBuildBottoms({ head, nodes, stage, list })
-
-  const typeLink = buildLinksToNextTypeByNode(head, { nodes })
-  const linksJoinedBottoms = []
-    .concat(links)
-    .concat(bottomLinks)
-    .concat(pairTypeLinks)
-    .concat(typeLink)
     .flat()
-
-  return linksJoinedBottoms
-}
-export const createEdges = ({ nodes, head }, { stage = 0 }) => {
-  const edges = buildHierarchyGraph({
-    head,
-    nodes,
-    stage,
-    list: [],
-  })
-
-  return edges
 }
 
-export const createScenarioGraph = ({ nodes, stage }) => {
+const buildNodeLinksHash = ({ nodes }) => {
+  const nodesReversedHash = nodes.reduce((hash, { id, links }) => {
+    if (!links.length) {
+      return hash
+    }
+
+    return {
+      ...hash,
+      [id]: links,
+    }
+  }, {})
+
+  return nodesReversedHash
+}
+
+const buildNodeLinksHashReversed = ({ nodes }) => {
+  const nodesReversedHash = nodes.reduce((hash, { id, links }) => {
+    const objLinks = links.reduce(
+      (allLinks, link) => ({
+        ...allLinks,
+        [link]: (hash[link] || []).concat(id),
+      }),
+      {},
+    )
+    return {
+      ...hash,
+      ...objLinks,
+    }
+  }, {})
+
+  return nodesReversedHash
+}
+
+export const buildIdToNodeHash = ({ nodes }) => {
   const nodesHash = nodes.reduce((hash, node) => {
     return {
       ...hash,
       [node.id]: node,
     }
   }, {})
+  return nodesHash
+}
 
+export const createEdges = ({ nodes }, { stage = 0 }) => {
   const head = nodes.find(({ head }) => head)
-  const edges = createEdges({ nodes: nodesHash, head }, { stage })
+  const nodesHash = buildIdToNodeHash({ nodes })
+  const nodeLinkHash = buildNodeLinksHash({ nodes })
+  const reversedLinksHash = buildNodeLinksHashReversed({ nodes })
+  const nodeNextLinks = buildLinksNodeToNextNodes({ nodeLinkHash })
+  const nodePreviousLinks = buildLinksNodeToPreviousNodes({ reversedLinksHash })
+  const nextPairTypeLinks = buildLinksNodeToNextTypeByPair({
+    nodeLinkHash,
+    nodesHash,
+  })
+
+  const pairTypeLinksPrevious = buildLinksNodeToPreviousTypeByPair({
+    reversedLinksHash,
+    nodesHash,
+  })
+
+  const bottomLinks = recursiveBuildStageLinks({
+    head,
+    nodesHash,
+    stage,
+    list: [],
+  })
+
+  const nextTypesLink = buildLinksToNextTypesByNode({ nodesHash })
+
+  const previousTypesLink = buildLinksToPreviousTypesByNode({
+    reversedLinksHash,
+    nodesHash,
+  })
+
+  const links = []
+    .concat(nodeNextLinks)
+    .concat(nodePreviousLinks)
+    .concat(nextPairTypeLinks)
+    .concat(pairTypeLinksPrevious)
+    .concat(bottomLinks)
+    .concat(nextTypesLink)
+    .concat(previousTypesLink)
+    .flat()
+
+  return links
+}
+
+export const createScenarioGraph = ({ nodes, stage }) => {
+  const edges = createEdges({ nodes }, { stage })
   const graph = edges.reduce(
     (graph, { from, to }) => graph.addEdge(from, to),
     Graph(),
