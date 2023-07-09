@@ -8,6 +8,7 @@ import {
   generatePreviousNodeTypeOfPairKey,
   generateNextNodesTypeOfNodeKey,
   generatePreviousNodesTypeOfNodeKey,
+  generateCurrentNodeTypeKey,
 } from './build-graph-keys.js'
 
 const buildStageLinks = ({ links, id }, { stage }) => {
@@ -176,6 +177,17 @@ export const buildIdToNodeHash = ({ nodes }) => {
   return nodesHash
 }
 
+const buildLinksToCurrentNodeType = ({ nodesHash }) => {
+  const linksToNextTypes = Object.entries(nodesHash)
+    .map(([id, { type }]) => ({
+      from: generateCurrentNodeTypeKey({ id }),
+      to: type,
+    }))
+    .filter(({ to }) => !!to.length)
+
+  return linksToNextTypes
+}
+
 export const createEdges = ({ nodes }, { stage = 0 }) => {
   const head = nodes.find(({ head }) => head)
   const nodesHash = buildIdToNodeHash({ nodes })
@@ -200,12 +212,14 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
     list: [],
   })
 
-  const nextTypesLink = buildLinksToNextTypesByNode({ nodesHash })
+  const nextTypesLinks = buildLinksToNextTypesByNode({ nodesHash })
 
-  const previousTypesLink = buildLinksToPreviousTypesByNode({
+  const previousTypesLinks = buildLinksToPreviousTypesByNode({
     reversedLinksHash,
     nodesHash,
   })
+
+  const currentNodeTypeLink = buildLinksToCurrentNodeType({ nodesHash })
 
   const links = []
     .concat(nodeNextLinks)
@@ -213,8 +227,9 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
     .concat(nextPairTypeLinks)
     .concat(pairTypeLinksPrevious)
     .concat(bottomLinks)
-    .concat(nextTypesLink)
-    .concat(previousTypesLink)
+    .concat(nextTypesLinks)
+    .concat(previousTypesLinks)
+    .concat(currentNodeTypeLink)
     .flat()
 
   return links
