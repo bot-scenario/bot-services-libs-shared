@@ -16,7 +16,12 @@ const checkStatus = async (res) => {
     const info = tryConvertJsonResponse(text)
     const { status, statusText } = res
 
-    throw new HttpError({ status, statusText, info })
+    throw new HttpError({
+      code: status,
+      httpStatusCode: status,
+      httpStatusText: statusText,
+      details: info,
+    })
   }
   return res
 }
