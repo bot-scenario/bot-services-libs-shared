@@ -188,6 +188,25 @@ const buildLinksToCurrentNodeType = ({ nodesHash }) => {
   return linksToNextTypes
 }
 
+const buildOptionsNestedLinks = ({ nodesWithOptionLinks }) => {
+  return nodesWithOptionLinks
+    .map(({ id, links }) =>
+      links.map((link) => ({
+        from: generateNextNodesOfNodeKey({ id }),
+        to: link,
+      })),
+    )
+    .flat()
+}
+
+const buildOptionNodes = ({ nodes }) => {
+  return nodes
+    .filter(({ data }) => data?.options)
+    .map(({ data }) => data?.options)
+    .flat()
+    .filter(({ links }) => links.length)
+}
+
 export const createEdges = ({ nodes }, { stage = 0 }) => {
   const head = nodes.find(({ head }) => head)
   const nodesHash = buildIdToNodeHash({ nodes })
@@ -220,6 +239,9 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
   })
 
   const currentNodeTypeLink = buildLinksToCurrentNodeType({ nodesHash })
+  const nodesWithOptionLinks = buildOptionNodes({ nodes })
+
+  const optionsNestedLinks = buildOptionsNestedLinks({ nodesWithOptionLinks })
 
   const links = []
     .concat(nodeNextLinks)
@@ -230,6 +252,7 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
     .concat(nextTypesLinks)
     .concat(previousTypesLinks)
     .concat(currentNodeTypeLink)
+    .concat(optionsNestedLinks)
     .flat()
 
   return links
