@@ -10,6 +10,7 @@ import {
   generatePreviousNodesTypeOfNodeKey,
   generateCurrentNodeTypeKey,
 } from './build-graph-keys.js'
+import { NODE_TYPES } from 'botscenario-shared'
 
 const buildStageLinks = ({ links, id }, { stage }) => {
   const edges = links.reduce(
@@ -266,4 +267,134 @@ export const createScenarioGraph = ({ nodes, stage }) => {
   )
 
   return graph
+}
+
+export const convertToMessageWithOption = ({
+  answerButtons,
+  answerButtonNodesHash,
+  id,
+}) => {
+  const messageWithOptionFaked = {
+    type: NODE_TYPES.MESSAGE_WITH_OPTION,
+    id,
+    links: [],
+    data: {
+      label: 'Select option',
+      id,
+      options: answerButtons.map((answerButton) => {
+        const {
+          data: { label, value, id: optionId },
+        } = answerButtonNodesHash[answerButton]
+        return {
+          id: optionId,
+          links: [],
+          text: label,
+          content: label,
+          response: value,
+        }
+      }),
+    },
+  }
+  return messageWithOptionFaked
+}
+
+export const groupNodes = ({ nodes, graph }) => {
+  const answerButtonNodes = nodes.filter(
+    ({ type }) => type === NODE_TYPES.ANSWER_BUTTON,
+  )
+
+  const answerButtonNodesGrouped = answerButtonNodes.reduce((groups, node) => {
+    const previousLinks = graph.adjacent(generatePreviousNodesOfNodeKey(node))
+    const all = previousLinks.reduce((previous, link) => {
+      return {
+        ...previous,
+        [link]: (previous[link] || []).concat(node.id),
+      }
+    }, groups)
+    return all
+  }, {})
+
+  const answerButtonNodesHash = answerButtonNodes.reduce((hash, node) => {
+    return {
+      ...hash,
+      [node.id]: node,
+    }
+  }, {})
+
+  const messageWithOptionsByAnswerButtons = Object.entries(
+    answerButtonNodesGrouped,
+  ).map(([id, answerButtons]) => {
+    const nid = v4()
+    return {
+      id,
+      answerButtons,
+      messageWithOptionFaked: convertToMessageWithOption({
+        answerButtons,
+        answerButtonNodesHash,
+        id: nid,
+      }),
+    }
+  })
+
+  const noneAnswerButtonNodes = nodes
+    .filter(({ type }) => type !== NODE_TYPES.ANSWER_BUTTON)
+    .map((node) => {
+      const linksToRemove = answerButtonNodesGrouped[node.id]
+      if (!linksToRemove) {
+        return node
+      }
+
+      const linksReduced = node.links.filter(
+        (link) => !linksToRemove.includes(link),
+      )
+
+      const { messageWithOptionFaked } = messageWithOptionsByAnswerButtons.find(
+        ({ id }) => id === node.id,
+      )
+      const links = [].concat(linksReduced).concat(messageWithOptionFaked.id)
+      return {
+        ...node,
+        links,
+      }
+    })
+
+  const messageWithOptions = messageWithOptionsByAnswerButtons.map(
+    ({ messageWithOptionFaked }) => {
+      return messageWithOptionFaked
+    },
+  )
+
+  const messageWithOptionsWithLink = messageWithOptions.map(
+    (messageWithOption) => {
+      const { data } = messageWithOption
+      const { options } = data
+      const optionsWithLink = options.map((option) => {
+        const { messageWithOptionFaked } =
+          messageWithOptionsByAnswerButtons.find(
+            ({ id }) => id === option.id,
+          ) || {}
+        const links = option.links || []
+        return {
+          ...option,
+          id: v4(),
+          links: messageWithOptionFaked
+            ? links.concat(messageWithOptionFaked.id)
+            : links,
+        }
+      })
+      return {
+        ...messageWithOption,
+        data: {
+          ...data,
+          options: optionsWithLink,
+        },
+      }
+    },
+  )
+
+  const enrichedNodes = []
+    .concat(noneAnswerButtonNodes)
+    .concat(messageWithOptionsWithLink)
+
+  return enrichedNodes
 }
