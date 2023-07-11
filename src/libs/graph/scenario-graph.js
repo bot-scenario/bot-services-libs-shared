@@ -274,6 +274,7 @@ export const convertToMessageWithOption = ({
   answerButtons,
   answerButtonNodesHash,
   id,
+  answerButtonOtherNodesLinks,
 }) => {
   const messageWithOptionFaked = {
     type: NODE_TYPES.MESSAGE_WITH_OPTION,
@@ -286,9 +287,10 @@ export const convertToMessageWithOption = ({
         const {
           data: { label, value, id: optionId },
         } = answerButtonNodesHash[answerButton]
+        const links = answerButtonOtherNodesLinks[answerButton] || []
         return {
           id: optionId,
-          links: [],
+          links,
           text: label,
           content: label,
           response: value,
@@ -302,6 +304,28 @@ export const convertToMessageWithOption = ({
 export const groupNodes = ({ nodes, graph }) => {
   const answerButtonNodes = nodes.filter(
     ({ type }) => type === NODE_TYPES.ANSWER_BUTTON,
+  )
+  const otherNodesIds = nodes
+    .filter(({ type }) => type !== NODE_TYPES.ANSWER_BUTTON)
+    .reduce((ids, { id }) => ({ ...ids, [id]: id }), {})
+
+  const answerButtonOtherNodesLinks = answerButtonNodes.reduce(
+    (allLinks, { id, links }) => {
+      if (!links?.length) {
+        return allLinks
+      }
+      const linksFiltered = links.filter((link) => otherNodesIds[link])
+
+      if (!linksFiltered.length) {
+        return allLinks
+      }
+
+      return {
+        ...allLinks,
+        [id]: linksFiltered,
+      }
+    },
+    {},
   )
 
   const answerButtonNodesGrouped = answerButtonNodes.reduce((groups, node) => {
@@ -330,9 +354,10 @@ export const groupNodes = ({ nodes, graph }) => {
       id,
       answerButtons,
       messageWithOptionFaked: convertToMessageWithOption({
+        id: nid,
         answerButtons,
         answerButtonNodesHash,
-        id: nid,
+        answerButtonOtherNodesLinks,
       }),
     }
   })
