@@ -37,3 +37,11 @@ export const generateNextNodesByFreeTextKey = ({ text }) => {
 export const generateCurrentNodeTypeKey = ({ id }) => {
   return `current-node-type-of-${id}`
 }
+
+export const generateNextNodesOfNodeExcludeTypeOfUserInputKey = ({ id }) => {
+  return `next-nodes-of-${id}-exclude-type-of-user-input`
+}
+
+export const generateNextUserInputNodesOfNodeKey = ({ id }) => {
+  return `next-user-input-nodes-of-${id}`
+}

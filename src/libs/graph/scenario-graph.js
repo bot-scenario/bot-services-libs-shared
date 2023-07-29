@@ -10,6 +10,8 @@ import {
   generateNextNodesTypeOfNodeKey,
   generatePreviousNodesTypeOfNodeKey,
   generateCurrentNodeTypeKey,
+  generateNextNodesOfNodeExcludeTypeOfUserInputKey,
+  generateNextUserInputNodesOfNodeKey,
 } from './build-graph-keys.js'
 import { NODE_TYPES } from 'botscenario-shared'
 
@@ -208,6 +210,42 @@ const buildOptionNodes = ({ nodes }) => {
     .flat()
     .filter(({ links }) => links.length)
 }
+const USER_INPUT_TYPES = Object.freeze({
+  [NODE_TYPES.DATA_TYPE_EXPECTED]: NODE_TYPES.DATA_TYPE_EXPECTED,
+})
+const buildLinksNodeToNextNodesExcludeTypeOfUserInput = ({
+  nodeLinkHash,
+  nodesHash,
+}) => {
+  return Object.entries(nodeLinkHash).reduce((allLinks, [id, links]) => {
+    return [
+      ...allLinks,
+      ...links
+        .filter((next) => !USER_INPUT_TYPES[nodesHash[next].type])
+        .map((next) => ({
+          from: generateNextNodesOfNodeExcludeTypeOfUserInputKey({ id }),
+          to: next,
+        })),
+    ]
+  }, [])
+}
+
+const buildLinksNodeToNextUserInputTypesNode = ({
+  nodeLinkHash,
+  nodesHash,
+}) => {
+  return Object.entries(nodeLinkHash).reduce((allLinks, [id, links]) => {
+    return [
+      ...allLinks,
+      ...links
+        .filter((next) => USER_INPUT_TYPES[nodesHash[next].type])
+        .map((next) => ({
+          from: generateNextUserInputNodesOfNodeKey({ id }),
+          to: next,
+        })),
+    ]
+  }, [])
+}
 
 export const createEdges = ({ nodes }, { stage = 0 }) => {
   const head = nodes.find(({ head }) => head)
@@ -215,6 +253,12 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
   const nodeLinkHash = buildNodeLinksHash({ nodes })
   const reversedLinksHash = buildNodeLinksHashReversed({ nodes })
   const nodeNextLinks = buildLinksNodeToNextNodes({ nodeLinkHash })
+  const nodeNextUserInputNodesLinks = buildLinksNodeToNextUserInputTypesNode({
+    nodeLinkHash,
+    nodesHash,
+  })
+  const nodeNextLinksExcludeTypeOfUserInput =
+    buildLinksNodeToNextNodesExcludeTypeOfUserInput({ nodeLinkHash, nodesHash })
   const nodePreviousLinks = buildLinksNodeToPreviousNodes({ reversedLinksHash })
   const nextPairTypeLinks = buildLinksNodeToNextTypeByPair({
     nodeLinkHash,
@@ -255,6 +299,8 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
     .concat(previousTypesLinks)
     .concat(currentNodeTypeLink)
     .concat(optionsNestedLinks)
+    .concat(nodeNextLinksExcludeTypeOfUserInput)
+    .concat(nodeNextUserInputNodesLinks)
     .flat()
 
   return links
