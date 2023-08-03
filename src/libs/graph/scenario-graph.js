@@ -329,7 +329,7 @@ export const convertToMessageWithOption = ({
     data: {
       label: 'Select option',
       id,
-      options: answerButtons.map((answerButton) => {
+      options: answerButtons.map((answerButton, index) => {
         const {
           data: { label, value, id: optionId },
         } = answerButtonNodesHash[answerButton]
@@ -340,10 +340,13 @@ export const convertToMessageWithOption = ({
           text: label,
           content: label,
           response: value,
+          row: index,
+          col: 0,
         }
       }),
     },
   }
+
   return messageWithOptionFaked
 }
 
