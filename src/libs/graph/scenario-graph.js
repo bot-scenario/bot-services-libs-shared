@@ -331,7 +331,7 @@ export const convertToMessageWithOption = ({
       id,
       options: answerButtons.map((answerButton, index) => {
         const {
-          data: { label, value, id: optionId },
+          data: { label, value, id: optionId, row, col },
         } = answerButtonNodesHash[answerButton]
         const links = answerButtonOtherNodesLinks[answerButton] || []
         return {
@@ -340,8 +340,8 @@ export const convertToMessageWithOption = ({
           text: label,
           content: label,
           response: value,
-          row: index,
-          col: 0,
+          row: row || index,
+          col: col || 0,
         }
       }),
     },
