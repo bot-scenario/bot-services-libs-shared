@@ -327,7 +327,7 @@ export const convertToMessageWithOption = ({
     id,
     links: [],
     data: {
-      label: 'Select option',
+      label: ' > ',
       id,
       options: answerButtons.map((answerButton, index) => {
         const {
