@@ -35,3 +35,4 @@ export * from './src/libs/graph/build-graph-keys.js'
 
 export { symmetricEncryption } from './src/libs/encryption/symmetric-encryption.js'
 export * from './src/debug/ngrok-helper.js'
+export * as telegramMessageType from './src/libs/telegram/message-type.js'
