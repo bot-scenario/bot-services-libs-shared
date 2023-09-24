@@ -46,6 +46,8 @@ export const consumeQueue = async ({
       } catch (error) {
         const { msgId } = parseMessage(msgInfo)
         log.error(`Error while handling message: ${msgId}`)
+        log.error(`Message:`, msgInfo)
+        log.error(error)
         if (nackOnError) {
           channel.nack(msgInfo)
         } else {
