@@ -37,3 +37,4 @@ export { symmetricEncryption } from './src/libs/encryption/symmetric-encryption.
 export * from './src/debug/ngrok-helper.js'
 export * as telegramMessageType from './src/libs/telegram/message-type.js'
 export * from './src/libs/database/index.js'
+export * from './src/constants/tenant-configuration.js'

@@ -1,2 +1,3 @@
 import { telegramMessageType } from '../index.js'
-console.log(telegramMessageType)
+import { TENANT_CONFIGURATION_TYPE } from '../index.js'
+console.log(telegramMessageType, TENANT_CONFIGURATION_TYPE)
