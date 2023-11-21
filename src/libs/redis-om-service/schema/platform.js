@@ -11,6 +11,7 @@ const PlatformProperties = {
   graph: { type: 'string' /* JSON string  */ },
   nodes: { type: 'string' /* JSON string  */ },
   tenantConfigurations: { type: 'string' /* JSON string  */ },
+  userActivationCodes: { type: 'string' /* JSON string  */ },
 }
 
 export const PlatformSchema = new Schema(Platform, PlatformProperties, {
