@@ -3,7 +3,7 @@ import { Entity, Schema } from 'redis-om'
 class Platform extends Entity {}
 
 const PlatformProperties = {
-  _id: { type: 'string' },
+  id: { type: 'string' },
   token: { type: 'string' },
   email: { type: 'string' },
   name: { type: 'string' },
