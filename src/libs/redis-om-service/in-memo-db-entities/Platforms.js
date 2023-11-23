@@ -31,7 +31,7 @@ export const initPlatforms = ({ Platforms }) => {
     updateInMemoEntity({
       entity,
       valuesToUpdate: {
-        userActivationCodes: JSON.stringify(userActivationCodes),
+        userActivationCodesStringify: JSON.stringify(userActivationCodes),
       },
     })
     await Platforms.save(entity)
