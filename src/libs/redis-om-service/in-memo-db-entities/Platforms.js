@@ -25,7 +25,7 @@ export const initPlatforms = ({ Platforms }) => {
     { userActivationCode },
   ) => {
     const entity = await findOne({ id })
-    const userActivationCodes = JSON.parse(entity?.userActivationCodes || '[]')
+    const userActivationCodes = entity?.userActivationCodes || []
     userActivationCodes.push(userActivationCode)
 
     updateInMemoEntity({
