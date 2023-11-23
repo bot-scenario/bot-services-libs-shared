@@ -1,6 +1,11 @@
 import { updateInMemoEntity } from './util.js'
 
 export const initChatter = ({ Chatters }) => {
+  const createDefaultValues = {
+    lastAnswerMessagesStringify: '[]',
+    stage: 0,
+  }
+
   const findOne = async ({ botId, chatId }) => {
     const chatter = await Chatters.search()
       .where('chatId')
@@ -40,7 +45,10 @@ export const initChatter = ({ Chatters }) => {
   }
 
   const create = async (chatter) => {
-    const entity = await Chatters.createEntity(chatter)
+    const entity = await Chatters.createEntity({
+      ...createDefaultValues,
+      ...chatter,
+    })
     await Chatters.save(entity)
     return findOne(chatter)
   }
