@@ -23,11 +23,8 @@ export const isItVideo = isItMediaType(MESSAGE_MEDIA_TYPE.VIDEO)
 export const isItPhoto = isItMediaType(MESSAGE_MEDIA_TYPE.PHOTO)
 export const isItDocument = isItMediaType(MESSAGE_MEDIA_TYPE.DOCUMENT)
 export const isItFreeText = isItMediaType(MESSAGE_MEDIA_TYPE.TEXT)
-export const isItCallbackQuery = isMessageTypeof(MESSAGE_TYPE.CALLBACK_QUERY)
+export const isItButtonClick = isMessageTypeof(MESSAGE_TYPE.BUTTON_CLICK)
 export const isItMessage = isMessageTypeof(MESSAGE_TYPE.MESSAGE)
-export const isItButtonPressed = ({ messageInfo }) => {
-  return isItCallbackQuery({ messageInfo })
-}
 
 export const getMessageType = ({ messageInfo }) => {
   switch (true) {
@@ -47,8 +44,8 @@ export const getMessageType = ({ messageInfo }) => {
       return MESSAGE_MEDIA_TYPE.VIDEO_NOTE
     case isItPoll({ messageInfo }):
       return MESSAGE_MEDIA_TYPE.POLL
-    case isItButtonPressed({ messageInfo }):
-      return MESSAGE_TYPE.CALLBACK_QUERY
+    case isItButtonClick({ messageInfo }):
+      return MESSAGE_TYPE.BUTTON_CLICK
     case isItMessage({ messageInfo }):
       return MESSAGE_MEDIA_TYPE.MESSAGE
 
