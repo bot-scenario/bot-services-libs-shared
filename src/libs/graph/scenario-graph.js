@@ -46,6 +46,28 @@ const buildLinksNodeToNextNodes = ({ nodeLinkHash }) => {
   }, [])
 }
 
+const buildLinksMultipleChoicesToSingleToNextNodes = ({ nodes }) => {
+  const links = nodes
+    .filter(
+      ({ type, links }) =>
+        ({ [NODE_TYPES.MULTIPLE_CHOICES]: true }[type] && links?.length),
+    )
+    .map((multipleChoices) => {
+      const { id, links } = multipleChoices
+      const choices = nodes
+        .filter(({ type }) => type === NODE_TYPES.MULTIPLE_CHOICES_CHOICE)
+        .filter(({ parentNode }) => parentNode === id)
+        .map(({ id }) =>
+          links.map((to) => ({ from: generateNextNodesOfNodeKey({ id }), to })),
+        )
+
+      return choices
+    })
+    .flat()
+
+  return links
+}
+
 const buildLinksNodeToPreviousNodes = ({ reversedLinksHash }) => {
   return Object.entries(reversedLinksHash).reduce((allLinks, [id, links]) => {
     return [
@@ -289,6 +311,10 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
 
   const optionsNestedLinks = buildOptionsNestedLinks({ nodesWithOptionLinks })
 
+  const multipleChoicesToSingle = buildLinksMultipleChoicesToSingleToNextNodes({
+    nodes,
+  })
+
   const links = []
     .concat(nodeNextLinks)
     .concat(nodePreviousLinks)
@@ -301,6 +327,7 @@ export const createEdges = ({ nodes }, { stage = 0 }) => {
     .concat(optionsNestedLinks)
     .concat(nodeNextLinksExcludeTypeOfUserInput)
     .concat(nodeNextUserInputNodesLinks)
+    .concat(multipleChoicesToSingle)
     .flat()
 
   return links
