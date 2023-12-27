@@ -1,6 +1,6 @@
 {
   "name": "bot-services-libs-shared",
-  "version": "1.0.59",
+  "version": "1.0.60",
   "description": "",
   "main": "index.js",
   "type": "module",
