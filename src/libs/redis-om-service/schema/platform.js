@@ -67,6 +67,7 @@ const PlatformProperties = {
   id: { type: 'string' },
   token: { type: 'string' },
   email: { type: 'string' },
+  webhookToken: { type: 'string' },
   name: { type: 'string' },
   application: { type: 'string' },
   graphStringify: { type: 'string' /* JSON string  */ },
