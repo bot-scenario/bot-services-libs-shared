@@ -22,7 +22,7 @@ export class Chatters extends Entity {
 }
 
 const ChatterProperties = {
-  chatId: { type: 'number' },
+  chatId: { type: 'string' },
   botId: { type: 'string' },
   stage: { type: 'number' },
   lastAnswerMessagesStringify: { type: 'text' },
