@@ -9,7 +9,7 @@ import {
 export const mapMessageTelegramBase = ({ originalMessage }) => {
   const { callback_query, message, update_id } = originalMessage
   const messageData = callback_query?.message || message
-  const { chat, date, from } = messageData
+  const { chat, date, from, message_id } = messageData
   const type = getMessageType({ originalMessage })
   const typeMapped = MESSAGE_MEDIA_TYPE_MAPPER[type] || type
   const { forward_date, forward_from } = messageData
@@ -17,6 +17,9 @@ export const mapMessageTelegramBase = ({ originalMessage }) => {
 
   const messageBase = {
     id: update_id,
+    imExtraInfo: {
+      tmId: message_id,
+    },
     chatId: chat.id,
     type: typeMapped,
     chatter: {
@@ -93,15 +96,15 @@ export const getWhatsAppMessageType = ({ message }) => {
 
 export const whatsappBaseExtraction = ({ originalMessage }) => {
   const {
-    entry: [{ changes }],
+    entry: [{ changes, id }],
   } = originalMessage
   const [change] = changes
   const { field, value } = change
-  return { field, value }
+  return { field, value, wbaid: id }
 }
 
 export const mapMessageWhatsAppBase = ({ originalMessage }) => {
-  const { field, value } = whatsappBaseExtraction({ originalMessage })
+  const { field, value, wbaid } = whatsappBaseExtraction({ originalMessage })
   const { [field]: messages, contacts } = value
   const [message] = messages
   const [contact] = contacts
@@ -110,6 +113,9 @@ export const mapMessageWhatsAppBase = ({ originalMessage }) => {
   const messageBase = {
     id: id,
     chatId: from,
+    imExtraInfo: {
+      wbaid,
+    },
     type,
     chatter: {
       id: from,
