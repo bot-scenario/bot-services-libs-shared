@@ -8,6 +8,7 @@ export const MESSAGE_MEDIA_TYPE = {
   AUDIO: 'audio',
   STICKER: 'sticker',
   CONTACT: 'contact',
+  REACTION: 'reaction',
   DOCUMENT: 'document',
   LOCATION: 'location',
   CONTACTS: 'contacts',
