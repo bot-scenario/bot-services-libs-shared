@@ -46,6 +46,7 @@ export const mapMessageWhatsAppContent = ({ message, type }) => {
     case MESSAGE_MEDIA_TYPE.AUDIO:
     case MESSAGE_MEDIA_TYPE.STICKER:
     case MESSAGE_MEDIA_TYPE.LOCATION:
+    case MESSAGE_MEDIA_TYPE.REACTION:
       return {
         [type]: message[type],
       }
