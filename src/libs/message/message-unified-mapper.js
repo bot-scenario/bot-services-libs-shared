@@ -30,7 +30,7 @@ export const mapMessageTelegramBase = ({ originalMessage }) => {
     },
     itIsForward,
     ...(itIsForward ? { forwardInfo: { forward_date, forward_from } } : null),
-    timestamp: date,
+    timestamp: `${date}`,
   }
   return { messageBase, message: messageData, type }
 }
