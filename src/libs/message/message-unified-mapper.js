@@ -93,7 +93,21 @@ export const getWhatsAppMessageType = ({ message }) => {
       return type
   }
 }
+export const extratReply = ({ originalMessage }) => {
+  const { callback_query } = originalMessage
+  const { data: id, message } = callback_query
+  const {
+    reply_markup: { inline_keyboard },
+  } = message
+  const buttonsFlat = inline_keyboard.reduce((buttons, button) => {
+    return buttons.concat(button.flat())
+  }, [])
+  const { text: title } = buttonsFlat.find(
+    (button) => button.callback_data === id,
+  )
 
+  return { id, title }
+}
 export const whatsappBaseExtraction = ({ originalMessage }) => {
   const {
     entry: [{ changes, id }],
@@ -161,7 +175,7 @@ export const mapMessageTelegramContent = ({
         ...(animation ? { attachment: 'animation' } : null),
       }
     case MESSAGE_MEDIA_TYPE.BUTTON_CLICK:
-      const reply = { id: originalMessage.callback_query.data }
+      const reply = extratReply({ originalMessage })
       return {
         reply,
       }
