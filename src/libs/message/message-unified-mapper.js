@@ -6,6 +6,11 @@ import {
   MESSAGE_MEDIA_TYPE_MAPPER,
 } from '../../constants/message-types.js'
 
+const INTERACTIVE_MAPPER = {
+  button_reply: MESSAGE_TYPE.BUTTON_CLICK,
+  list_reply: MESSAGE_TYPE.BUTTON_CLICK_MULTIPLE,
+}
+
 export const mapMessageTelegramBase = ({ originalMessage }) => {
   const { callback_query, message, update_id } = originalMessage
   const messageData = callback_query?.message || message
@@ -64,6 +69,12 @@ export const mapMessageWhatsAppContent = ({ message, type }) => {
       return {
         reply: button_reply,
       }
+    case MESSAGE_MEDIA_TYPE.BUTTON_CLICK_MULTIPLE:
+      const { interactive: interactiveMultiple } = message
+      const { list_reply } = interactiveMultiple
+      return {
+        reply: list_reply,
+      }
     default:
       return {}
   }
@@ -81,20 +92,20 @@ export const mapMessageTelegram = ({ originalMessage }) => {
   const messageMapped = { ...messageBase, ...messageContent }
   return messageMapped
 }
+
 export const getWhatsAppMessageType = ({ message }) => {
   const { type } = message
   switch (type) {
     case 'interactive': {
       const { interactive } = message
-      return interactive.type === 'button_reply'
-        ? MESSAGE_TYPE.BUTTON_CLICK
-        : interactive.type
+      return INTERACTIVE_MAPPER[interactive.type] || interactive.type
     }
     default:
       return type
   }
 }
-export const extratReply = ({ originalMessage }) => {
+
+export const extractReply = ({ originalMessage }) => {
   const { callback_query } = originalMessage
   const { data: id, message } = callback_query
   const {
@@ -176,7 +187,7 @@ export const mapMessageTelegramContent = ({
         ...(animation ? { attachment: 'animation' } : null),
       }
     case MESSAGE_MEDIA_TYPE.BUTTON_CLICK:
-      const reply = extratReply({ originalMessage })
+      const reply = extractReply({ originalMessage })
       return {
         reply,
       }

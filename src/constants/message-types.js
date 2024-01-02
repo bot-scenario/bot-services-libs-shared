@@ -14,11 +14,13 @@ export const MESSAGE_MEDIA_TYPE = {
   CONTACTS: 'contacts',
   VIDEO_NOTE: 'video_note',
   BUTTON_CLICK: 'button_click',
+  BUTTON_CLICK_MULTIPLE: 'button_click_multiple',
 }
 
 export const MESSAGE_TYPE = {
   MESSAGE: 'message',
-  BUTTON_CLICK: 'button_click',
+  BUTTON_CLICK: MESSAGE_MEDIA_TYPE.BUTTON_CLICK,
+  BUTTON_CLICK_MULTIPLE: MESSAGE_MEDIA_TYPE.BUTTON_CLICK_MULTIPLE,
   UNKNOWN_MESSAGE_TYPE: 'unknown_message_type',
 }
 
