@@ -14,10 +14,17 @@ export class Chatters extends Entity {
 
     return this.#dynamicResponseReady
   }
-  get lastAnswerMessages() {
-    return this.lastAnswerMessagesStringify
-      ? JSON.parse(this.lastAnswerMessagesStringify)
-      : this.lastAnswerMessagesStringify
+
+  get lastOutgoingMessages() {
+    return this.lastOutgoingMessagesStringify
+      ? JSON.parse(this.lastOutgoingMessagesStringify)
+      : this.lastOutgoingMessagesStringify
+  }
+
+  get lastIncomingMessages() {
+    return this.lastIncomingMessagesStringify
+      ? JSON.parse(this.lastIncomingMessagesStringify)
+      : this.lastIncomingMessagesStringify
   }
 }
 
@@ -25,7 +32,8 @@ const ChatterProperties = {
   chatId: { type: 'string' },
   botId: { type: 'string' },
   stage: { type: 'number' },
-  lastAnswerMessagesStringify: { type: 'text' },
+  lastOutgoingMessagesStringify: { type: 'text' },
+  lastIncomingMessagesStringify: { type: 'text' },
   dynamicResponseStringify: { type: 'string' },
 }
 

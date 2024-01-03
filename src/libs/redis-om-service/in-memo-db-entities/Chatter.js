@@ -2,7 +2,9 @@ import { updateInMemoEntity } from './util.js'
 
 export const initChatter = ({ Chatters }) => {
   const createDefaultValues = {
-    lastAnswerMessagesStringify: '[]',
+    lastOutgoingMessagesStringify: '[]',
+    lastIncomingMessagesStringify: '[]',
+
     stage: 0,
   }
 
