@@ -1,6 +1,6 @@
+import { DATABASE_ID_PREFIX } from '../constants/database-ids-prefixes.js'
 import { fileTypeFromBuffer } from 'file-type'
 import { readChunk } from 'read-chunk'
-import { DATABASE_ID_PREFIX } from 'botscenario-shared'
 import { v4 } from 'uuid'
 
 export const getMimeType = async (fileName, length = 1000) => {

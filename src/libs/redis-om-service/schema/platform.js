@@ -75,6 +75,7 @@ const PlatformProperties = {
   nodesStringify: { type: 'string' /* JSON string  */ },
   tenantConfigurationsStringify: { type: 'string' /* JSON string  */ },
   userActivationCodesStringify: { type: 'string' /* JSON string  */ },
+  maxIncomingMessagesToSave: { type: 'number' },
 }
 
 export const PlatformSchema = new Schema(Platform, PlatformProperties, {
