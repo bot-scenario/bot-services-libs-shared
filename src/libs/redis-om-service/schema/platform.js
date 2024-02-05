@@ -70,6 +70,7 @@ const PlatformProperties = {
   webhookToken: { type: 'string' },
   name: { type: 'string' },
   phoneNumberId: { type: 'string' },
+  phoneNumber: { type: 'string' },
   application: { type: 'string' },
   graphStringify: { type: 'string' /* JSON string  */ },
   nodesStringify: { type: 'string' /* JSON string  */ },
