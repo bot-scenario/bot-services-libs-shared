@@ -19,22 +19,28 @@ export const getCurrentRunningNgrok = async (
   }
 }
 
-const runNgrokBackground = async ({ port = 1234 } = {}) => {
+const runNgrokBackground = ({ port = 1234 } = {}) => {
   try {
-    await exec(`ngrok http ${port} &`)
+    exec(`ngrok http ${port} &`)
   } catch (error) {
     console.log(error)
   }
 }
 
-export const getProxy = async ({ port = 1234 }) => {
+export const getProxy = async ({
+  port = 1234,
+  maxRetry = 3,
+  ngrokTunnelsUrl = 'http://127.0.0.1:4040/api/tunnels',
+}) => {
   try {
-    let currentUrl = await getCurrentRunningNgrok()
-    if (!currentUrl) {
-      await runNgrokBackground({ port })
+    let currentUrl = await getCurrentRunningNgrok(ngrokTunnelsUrl)
+
+    if (!currentUrl && maxRetry) {
+      runNgrokBackground({ port })
       await sleep(2000)
-      currentUrl = await getCurrentRunningNgrok()
+      return getProxy({ port, ngrokTunnelsUrl, maxRetry: maxRetry - 1 })
     }
+
     console.log(`Ngrok url: ${currentUrl}`)
     if (!currentUrl) {
       throw new Error(`Couldn't get ngrok url`)
