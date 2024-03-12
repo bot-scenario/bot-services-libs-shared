@@ -11,4 +11,6 @@ export const DATABASE_ID_PREFIX = Object.freeze({
   USER_ACTIVATION: 'usr_act',
   WHATSAPP_TOKEN: 'tk_wh_wa',
   TELEGRAM_TOKEN: 'tk_wh_tgm',
+  SCHEDULE_MEETING: 'sch_mt',
+  PAYMENT_PAYPAL: 'pay_pal',
 })
